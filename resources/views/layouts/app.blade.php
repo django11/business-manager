@@ -10,14 +10,14 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -75,9 +75,40 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        @guest
+            <main class="py-4">
+                @yield('content')
+            </main>
+        @else
+            <main id="app" class="py-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card mb-3">
+                                <div class="card-header">Meniu</div>
+
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0" aria-current="true">
+                                            <a class="link-primary" href="{{ route('companies.index') }}">Companies</a>
+                                        </li>
+                                        <li class="list-group-item px-0">
+                                            <a class="link-primary" href="{{ route('companies.create') }}">Add Company</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <latest-companies-widget></latest-companies-widget>
+                        </div>
+
+                        <div class="col-md-9">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+            </main>
+        @endguest
     </div>
 </body>
 </html>
